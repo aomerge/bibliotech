@@ -1,13 +1,13 @@
-package com.aomerge.Bbliotech;
+package com.aomerge.rentbooks;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RentBooksServiceApplication {
+public class BbliotechApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(RentBooksServiceApplication.class, args);
+		SpringApplication.run(BbliotechApplication.class, args);
 	}
 
 }

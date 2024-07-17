@@ -1,4 +1,4 @@
-package com.aomerge.Bbliotech;
+package com.aomerge.rentbooks;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
