@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: api-gateway
+  config:
+    import: "optional:configserver:"
+  cloud:
+    config:
+      uri: http://${HOST_CONFIG}:${PORT_CONFIG}
+      username: ${ADMIN_USER_CONFIG}
+      password: ${ADMIN_PASSWORD_CONFIG}
+    gateway:
+      routes:
+        - id: books_service
+          uri: lb://books-service
+          predicates:
+            - Path=/api/v1/books-service/**
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+openapi:
+  groups:
+    enabled: true
+  enabled: true
+  swagger-ui:
+    config-url: /v3/api-docs/swagger-config
+    url: /v3/api-docs
+    urls:
+      - url: /books-service/v3/api-docs
+        name: Books Service
