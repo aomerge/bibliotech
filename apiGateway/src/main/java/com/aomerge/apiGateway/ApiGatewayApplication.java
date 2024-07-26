@@ -16,6 +16,9 @@ public class ApiGatewayApplication {
         System.setProperty("PORT_CONFIG", dotenv.get("PORT_CONFIG"));
         System.setProperty("ADMIN_USER_CONFIG", dotenv.get("ADMIN_USER_CONFIG"));
         System.setProperty("ADMIN_PASSWORD_CONFIG", dotenv.get("ADMIN_PASSWORD_CONFIG"));
+        System.setProperty("EUREKA_PORT", dotenv.get("EUREKA_PORT"));
+        System.setProperty("GATEWAY_PORT", dotenv.get("GATEWAY_PORT"));
+        System.setProperty("BOOKS_PORT", dotenv.get("BOOKS_PORT"));
 
         SpringApplication.run(ApiGatewayApplication.class, args);
     }
