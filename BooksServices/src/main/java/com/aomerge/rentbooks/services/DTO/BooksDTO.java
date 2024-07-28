@@ -2,7 +2,6 @@ package com.aomerge.rentbooks.services.DTO;
 
 import com.aomerge.rentbooks.config.exeptions.UserNotExistException;
 import com.aomerge.rentbooks.config.validation.books.BaseBookDTO;
-import com.aomerge.rentbooks.config.validation.books.IdBookvalidationDTO;
 import com.aomerge.rentbooks.models.Book;
 
 import java.util.List;
