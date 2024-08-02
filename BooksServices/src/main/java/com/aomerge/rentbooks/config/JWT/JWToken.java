@@ -1,5 +1,6 @@
 package com.aomerge.rentbooks.config.JWT;
 
+import com.aomerge.rentbooks.config.access.AccesBinary;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 
@@ -13,6 +14,16 @@ public class JWToken {
     private static final Key key_create = Keys.hmacShaKeyFor(KEY_CREATE.getBytes());
     private List<String> Logger;
 
+    public static String CreateTokenUserTest(String subject ) {
+        AccesBinary acces = new AccesBinary();
+        acces.setPermition(acces.READ);
+        acces.setPermition(acces.RESERVE);
+        acces.setPermition(acces.RETURN);
+        acces.setPermition(acces.BORROW);
+
+        return GenerateToken(subject, 60, acces.getPermition(), "Madero");
+    }
+
     private static boolean ValidateToken(String token, Key key, Object Data) {
         try {
             Jwts.parser().setSigningKey(key).build().parseSignedClaims(token);
@@ -25,17 +36,19 @@ public class JWToken {
         return Jwts.parser().setSigningKey(key).build().parseSignedClaims(token).getBody();
     }
 
-    private static String GenerateToken(String subject, int expirationTime) {
+    private static String GenerateToken(String subject, int expirationTime, byte acces, String branchOffice ) {
         String jti = UUID.randomUUID().toString();
         Date now = new Date();
         Date exp = new Date(now.getTime() + 60000L * expirationTime);
 
         return Jwts.builder()
                 .subject(subject)
+                .claim("Acces", acces )
+                .claim("BranchOffice", branchOffice)
                 .claim("id", jti)
                 .claim("ait", now.getTime())
                 .expiration(exp)
-                .signWith(key_create, SignatureAlgorithm.HS512)
+                .signWith(key_create)
                 .compact();
     }
 }

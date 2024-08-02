@@ -1,7 +1,16 @@
 package com.aomerge.rentbooks.config.access;
 
 public class AccesBinary extends PermitionBinary {
+
+    public AccesBinary() {
+        super();
+    }
+
     private byte userPermition = 0;
+
+    public Byte getPermition() {
+        return userPermition;
+    }
 
     public void setPermition(byte permition) {
        userPermition |= permition;
