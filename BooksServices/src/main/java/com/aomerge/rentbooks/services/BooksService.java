@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import com.aomerge.rentbooks.repository.BooksRepository;
 import com.aomerge.rentbooks.models.Book;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -143,7 +142,7 @@ public class BooksService  implements BooksDTO {
 
     @Override
     public String deleteBook(String id) throws UserNotExistException {
-        Book bookExist = booksRepository.findById(id).orElseThrow(() -> new UserNotExistException(404, "Book not found"));
+        booksRepository.findById(id).orElseThrow(() -> new UserNotExistException(404, "Book not found"));
         booksRepository.deleteById(id);
         return "Book deleted";
     }
