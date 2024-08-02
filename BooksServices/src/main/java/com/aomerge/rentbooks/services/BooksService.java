@@ -153,7 +153,7 @@ public class BooksService  implements BooksDTO {
      * */
     @Override
     public List<Book> searchBooks(String title) {
-        return (List<Book>) booksRepository.findByTitle(title);
+        return booksRepository.findByTitle(title);
     }
 
     /**this method is used to create a sample book
@@ -170,8 +170,9 @@ public class BooksService  implements BooksDTO {
         return booksRepository.save(book);
     }
 
+    /*
     public BooksRepository getBooksRepository() {
         return booksRepository;
-    }
+    }*/
 
 }
