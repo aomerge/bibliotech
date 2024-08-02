@@ -138,7 +138,13 @@ public class BookController {
     @ApiResponse(responseCode = "404", description = "Not Found")
     @ApiResponse(responseCode = "500", description = "Internal Server Error")
     @PutMapping("/book/update/{id}")
-    public ResponseEntity<?> updateBook(@Validated(OnUpdateAll.class) @PathVariable String id, @RequestBody BaseBookDTO book, BindingResult result) {
+    public ResponseEntity<?> updateBook(
+            @Validated(OnUpdateAll.class)
+            @ValidAuthorizationHeader(message = "Authorization header is required and cannot be empty")
+            @RequestHeader(name = "Authorization", required = false) String authorizationHeader,
+            @PathVariable String id,
+            @RequestBody BaseBookDTO book, BindingResult result
+    ) {
         try {
             return ResponseEntity.ok(booksService.updateBook(id, book));
         } catch (UserBadRequest e){
@@ -156,7 +162,12 @@ public class BookController {
     @ApiResponse(responseCode = "404", description = "Not Found")
     @ApiResponse(responseCode = "500", description = "Internal Server Error")
     @PatchMapping("/book/update")
-    public ResponseEntity<?> updateBook(@Validated(OnUpdate.class) @RequestBody BaseBookDTO book , BindingResult result) {
+    public ResponseEntity<?> updateBook(
+            @Validated(OnUpdate.class)
+            @ValidAuthorizationHeader(message = "Authorization header is required and cannot be empty")
+            @RequestHeader(name = "Authorization", required = false) String authorizationHeader,
+            @RequestBody BaseBookDTO book , BindingResult result
+    ) {
         if (result.hasErrors()){
             Map<String, String> errors = new HashMap<>();
             result.getFieldErrors().forEach(error ->{
@@ -178,7 +189,11 @@ public class BookController {
     @Operation(summary = "Delete a book", description = "Delete a book")
     @ApiResponse(responseCode = "200", description = "Book deleted")
     @DeleteMapping("/book/delete/{id}")
-    public ResponseEntity<?> deleteBook(@PathVariable String id) {
+    public ResponseEntity<?> deleteBook(
+            @ValidAuthorizationHeader(message = "Authorization header is required and cannot be empty")
+            @RequestHeader(name = "Authorization", required = false) String authorizationHeader,
+            @PathVariable String id
+    ) {
         try {
             JSONObject response = new JSONObject();
             response.put("code", 200);
@@ -193,7 +208,9 @@ public class BookController {
     }
 
     @GetMapping("/create/token/{id}")
-    public ResponseEntity<?> createToken(@PathVariable String id) {
+    public ResponseEntity<?> createToken(
+            @PathVariable String id
+    ) {
         String token =  JWToken.CreateTokenUserTest(id);
         return ResponseEntity.ok(token);
     }
