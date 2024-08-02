@@ -1,4 +1,5 @@
 package com.aomerge.rentbooks.services;
+import com.aomerge.rentbooks.config.exeptions.CustomAuthorizationException;
 import com.aomerge.rentbooks.config.exeptions.UserBadRequest;
 import com.aomerge.rentbooks.config.exeptions.UserNotExistException;
 import com.aomerge.rentbooks.config.validation.books.BaseBookDTO;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.aomerge.rentbooks.repository.BooksRepository;
 import com.aomerge.rentbooks.models.Book;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -42,7 +44,11 @@ public class BooksService  implements BooksDTO {
      * @return Book this is the book that was created
      * */
     @Override
-    public Book createBook(BaseBookDTO book) {
+    public Book createBook(BaseBookDTO book, String authorizationHeader) {
+        // Valida el header de autorización
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            throw new CustomAuthorizationException("header de autorización inválido", 401, "Some additional info");
+        }
         Set<ConstraintViolation<BaseBookDTO>> violations = validator.validate(book, OnCreate.class);
         if(!violations.isEmpty()) {
             throw new ConstraintViolationException(violations);
@@ -150,6 +156,7 @@ public class BooksService  implements BooksDTO {
     public List<Book> searchBooks(String title) {
         return (List<Book>) booksRepository.findByTitle(title);
     }
+
     /**this method is used to create a sample book
      * @return Book this is the sample book that was created
      * */

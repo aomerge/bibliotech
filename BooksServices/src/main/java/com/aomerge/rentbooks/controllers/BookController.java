@@ -1,8 +1,11 @@
 package com.aomerge.rentbooks.controllers;
 
+import com.aomerge.rentbooks.config.JWT.JWToken;
+import com.aomerge.rentbooks.config.exeptions.CustomAuthorizationException;
 import com.aomerge.rentbooks.config.exeptions.UserBadRequest;
 import com.aomerge.rentbooks.config.exeptions.UserNotExistException;
 import com.aomerge.rentbooks.config.validation.books.BaseBookDTO;
+import com.aomerge.rentbooks.config.validation.fit.ValidAuthorizationHeader;
 import com.aomerge.rentbooks.config.validation.groups.OnCreate;
 import com.aomerge.rentbooks.config.validation.groups.OnUpdate;
 import com.aomerge.rentbooks.config.validation.groups.OnUpdateAll;
@@ -10,12 +13,14 @@ import com.aomerge.rentbooks.models.Book;
 import com.aomerge.rentbooks.services.DTO.BooksDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.ConstraintViolationException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -96,18 +101,32 @@ public class BookController {
     @ApiResponse(responseCode = "400", description = "Bad Request")
     @ApiResponse(responseCode = "500", description = "Internal Server Error")
     @PostMapping( "/book/create")
-    public ResponseEntity<?> createBook(@Validated(OnCreate.class) @RequestBody BaseBookDTO bookDTO, BindingResult result) {
+    public ResponseEntity<?> createBook(
+            @Validated(OnCreate.class)
+            @ValidAuthorizationHeader(message = "Authorization header is required and cannot be empty")
+            @RequestHeader(name = "Authorization", required = false) String authorizationHeader,
+            @RequestBody BaseBookDTO bookDTO,
+            BindingResult result
+    ) {
+
         if (result.hasErrors()){
             Map<String, String> errors = new HashMap<>();
-            result.getFieldErrors().forEach(error ->
-                    errors.put(error.getField(), error.getDefaultMessage()));
+            result.getFieldErrors().forEach(error ->{
+                errors.put("code", "400" );
+                errors.put("messenger", error.getDefaultMessage());
+                errors.put("date", LocalDateTime.now().toString());
+            });
             return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
         }
         try{
-            return ResponseEntity.ok(booksService.createBook(bookDTO));
-        }catch (ExceptionInInitializerError e) {
+            return ResponseEntity.ok(booksService.createBook(bookDTO, authorizationHeader ));
+        }catch (CustomAuthorizationException e) {
+            return ResponseEntity.status(401).body(e.getMessage());
+        }
+        catch (ExceptionInInitializerError e) {
             return ResponseEntity.status(400).body(e.getMessage());
         }catch (Exception e) {
+            System.out.println("Exception caught: " + e.getClass().getName() + " - " + e.getMessage());
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
@@ -171,6 +190,12 @@ public class BookController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Internal Server Error");
         }
+    }
+
+    @GetMapping("/create/token/{id}")
+    public ResponseEntity<?> createToken(@PathVariable String id) {
+        String token =  JWToken.CreateTokenUserTest(id);
+        return ResponseEntity.ok(token);
     }
 
 

@@ -7,6 +7,13 @@ import com.aomerge.rentbooks.models.Book;
 import java.util.List;
 
 /**this is the interface of the books
+ * 1- createSampleBook
+ * 2- createBook
+ * 3- getAllBooks
+ * 4- getBook
+ * 5- updateBook
+ * 6- deleteBook
+ * 7- searchBooks
  * */
 public interface BooksDTO {
     /**this method is used to create a sample book
@@ -17,7 +24,7 @@ public interface BooksDTO {
      * @param book this is the book that is going to be created
      * @return Book this is the book that was created
      * */
-    public Book createBook(BaseBookDTO book);
+    public Book createBook(BaseBookDTO book, String authorizationHeader);
     /**this method is used to get all the books
      * @return List<Book> this is the list of all the books
      * */
@@ -48,4 +55,5 @@ public interface BooksDTO {
      * @return List<Book> this is the list of books that were found
      * */
     public List<Book> searchBooks(String title);
+
 }

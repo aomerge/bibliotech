@@ -30,6 +30,7 @@ public class BbliotechApplication {
 		System.setProperty("EUREKA_PORT", dotenv.get("EUREKA_PORT"));
 		System.setProperty("BOOKS_PORT", dotenv.get("BOOKS_PORT"));
 		System.setProperty("MONGODB_BOOKS", dotenv.get("MONGODB_BOOKS"));
+		System.setProperty("JWT_CREATE_KEY", dotenv.get("JWT_CREATE_KEY"));
 
 		SpringApplication.run(BbliotechApplication.class, args);
 	}
