@@ -17,10 +17,10 @@ public class AuthorizationHeaderValidator implements ConstraintValidator<ValidAu
         if (authorizationHeader == null || authorizationHeader.trim().isEmpty()) {
             System.out.println(message);
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(message)
+            context.buildConstraintViolationWithTemplate(this.message)
                     .addConstraintViolation();
             return false;
         }
-        return true;
+        return authorizationHeader.startsWith("Bearer ");
     }
 }
