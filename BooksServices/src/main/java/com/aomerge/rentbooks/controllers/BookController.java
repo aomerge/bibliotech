@@ -34,6 +34,7 @@ import java.util.Map;
 public class BookController {
     @Autowired
     private BooksDTO booksService;
+
     private static final String BOOKS = "/api/v1/books-service";
 
     @Operation(summary = "Hello", description = "Hello")
