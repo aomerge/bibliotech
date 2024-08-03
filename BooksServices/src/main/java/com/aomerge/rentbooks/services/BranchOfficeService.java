@@ -1,12 +1,9 @@
 package com.aomerge.rentbooks.services;
 
-import com.aomerge.rentbooks.config.exeptions.CustomAuthorizationException;
 import com.aomerge.rentbooks.config.exeptions.UserNotExistException;
-import com.aomerge.rentbooks.config.validation.BranchOffice.BaseBranchOfficeDTO;
-import com.aomerge.rentbooks.config.validation.books.BaseBookDTO;
+import com.aomerge.rentbooks.config.validation.branchOffice.BaseBranchOfficeDTO;
 import com.aomerge.rentbooks.config.validation.global.HeaderValidationDTO;
 import com.aomerge.rentbooks.config.validation.groups.OnCreate;
-import com.aomerge.rentbooks.models.Book;
 import com.aomerge.rentbooks.models.BranchOffice;
 import com.aomerge.rentbooks.repository.BranchOfficeRepository;
 import com.aomerge.rentbooks.services.DTO.BranchOfficeDTO;
@@ -67,12 +64,31 @@ public class BranchOfficeService implements BranchOfficeDTO {
     }
 
     @Override
-    public void updateOffice( HeaderValidationDTO authorizationHeader, BaseBranchOfficeDTO Offices) {
+    public void updateOffice( HeaderValidationDTO authorizationHeader, BaseBranchOfficeDTO Offices) throws UserNotExistException {
         // validation Header
         Set<ConstraintViolation<HeaderValidationDTO>> violationHeader = validator.validate(authorizationHeader);
         if (!violationHeader.isEmpty()){
             throw new ConstraintViolationException(violationHeader);
         }
+        // validation Body
+        Set<ConstraintViolation<BaseBranchOfficeDTO>> violations = validator.validate(Offices, OnCreate.class);
+        if(!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
+
+        BranchOffice branchOfficce = branchOfficesRespository.findById(Offices.getIdOffice()).map(
+                office ->{
+                    office.setName(Offices.getName());
+                    office.setAddress(Offices.getAddress());
+                    office.setCity(Offices.getCity());
+                    office.setCountry(Offices.getCountry());
+                    office.setPhone(Offices.getPhone());
+                    return office;
+                })
+                .orElseThrow(() -> new UserNotExistException(404, "Book not found"));
+
+        branchOfficesRespository.save(branchOfficce);
+
 
     }
 

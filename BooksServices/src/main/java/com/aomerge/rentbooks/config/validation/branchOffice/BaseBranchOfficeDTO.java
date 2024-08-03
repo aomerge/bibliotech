@@ -1,8 +1,7 @@
-package com.aomerge.rentbooks.config.validation.BranchOffice;
+package com.aomerge.rentbooks.config.validation.branchOffice;
 
 import com.aomerge.rentbooks.config.validation.groups.OnCreate;
 import com.aomerge.rentbooks.config.validation.groups.OnUpdate;
-import com.aomerge.rentbooks.config.validation.groups.OnUpdateAll;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;

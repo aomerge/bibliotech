@@ -3,7 +3,7 @@ package com.aomerge.rentbooks.config.validation.books;
 import com.aomerge.rentbooks.config.validation.groups.OnCreate;
 import com.aomerge.rentbooks.config.validation.groups.OnUpdate;
 import com.aomerge.rentbooks.config.validation.groups.OnUpdateAll;
-import com.aomerge.rentbooks.controllers.Category;
+import com.aomerge.rentbooks.controllers.CategoryController;
 import com.aomerge.rentbooks.models.BookDigital;
 import com.aomerge.rentbooks.models.Tag;
 import jakarta.validation.constraints.*;
@@ -12,7 +12,6 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.Date;
 
@@ -46,7 +45,7 @@ public class BaseBookDTO {
     protected int access;
 
     @NotNull(groups = OnUpdateAll.class, message = "Status is required")
-    private Category categoryId;
+    private CategoryController categoryId;
 
     @NotNull(groups = OnUpdateAll.class, message = "Tags is required")
     private Tag tagsId;
@@ -131,11 +130,11 @@ public class BaseBookDTO {
         this.access = access;
     }
 
-    public @NotNull(groups = OnUpdateAll.class, message = "Status is required") Category getCategoryId() {
+    public @NotNull(groups = OnUpdateAll.class, message = "Status is required") CategoryController getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(@NotNull(groups = OnUpdateAll.class, message = "Status is required") Category categoryId) {
+    public void setCategoryId(@NotNull(groups = OnUpdateAll.class, message = "Status is required") CategoryController categoryId) {
         this.categoryId = categoryId;
     }
 
