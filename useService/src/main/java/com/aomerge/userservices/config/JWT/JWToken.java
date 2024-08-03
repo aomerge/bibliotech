@@ -25,6 +25,10 @@ public class JWToken {
         return GenerateToken(subject, 60, acces.getPermition(), "Madero");
     }
 
+    public static String CreateTokenUser(String subject, String branchOffice, byte acces) {
+        return GenerateToken(subject, 60*60, acces, branchOffice);
+    }
+
     private static boolean ValidateToken(String token, Key key, Object Data) {
         try {
             Jwts.parser().setSigningKey(key).build().parseSignedClaims(token);
@@ -33,6 +37,7 @@ public class JWToken {
             return false;
         }
     }
+
     private static Claims GetClaims(String token, Key key) {
         return Jwts.parser().setSigningKey(key).build().parseSignedClaims(token).getBody();
     }
