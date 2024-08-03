@@ -3,6 +3,7 @@ import com.aomerge.rentbooks.config.exeptions.CustomAuthorizationException;
 import com.aomerge.rentbooks.config.exeptions.UserBadRequest;
 import com.aomerge.rentbooks.config.exeptions.UserNotExistException;
 import com.aomerge.rentbooks.config.validation.books.BaseBookDTO;
+import com.aomerge.rentbooks.config.validation.global.HeaderValidationDTO;
 import com.aomerge.rentbooks.config.validation.groups.OnCreate;
 import com.aomerge.rentbooks.config.validation.groups.OnUpdateAll;
 import com.aomerge.rentbooks.services.DTO.BooksDTO;
@@ -46,7 +47,7 @@ public class BooksService  implements BooksDTO {
     public Book createBook(BaseBookDTO book, String authorizationHeader) {
         // Valida el header de autorización
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            throw new CustomAuthorizationException("header de autorización inválido", 401, "Some additional info");
+            throw new CustomAuthorizationException(401,"header de autorización inválido");
         }
         Set<ConstraintViolation<BaseBookDTO>> violations = validator.validate(book, OnCreate.class);
         if(!violations.isEmpty()) {
@@ -97,7 +98,13 @@ public class BooksService  implements BooksDTO {
      * @return Book this is the book that was updated
      * */
     @Override
-    public Book updateBook(String id, BaseBookDTO newBook) throws UserNotExistException {
+    public Book updateBook(HeaderValidationDTO headerValidationDTO , String id, BaseBookDTO newBook) throws UserNotExistException {
+        // Valida el header de autorización
+        Set<ConstraintViolation<HeaderValidationDTO>> violationHeader = validator.validate(headerValidationDTO);
+        if (!violationHeader.isEmpty()){
+            throw new CustomAuthorizationException(401, violationHeader);
+        }
+        // validation Body
         Set<ConstraintViolation<BaseBookDTO>> violations = validator.validate(newBook, OnUpdateAll.class);
         if (!violations.isEmpty()) {
             throw new UserBadRequest( violations);
@@ -125,7 +132,12 @@ public class BooksService  implements BooksDTO {
      * @throws UserNotExistException this is an exception that is thrown when the book does not exist
      * */
     @Override
-    public Book updateBook(BaseBookDTO newBook) throws UserNotExistException {
+    public Book updateBook(HeaderValidationDTO headerValidationDTO, BaseBookDTO newBook) throws UserNotExistException {
+        // Valida el header de autorización
+        Set<ConstraintViolation<HeaderValidationDTO>> violationHeader = validator.validate(headerValidationDTO);
+        if (!violationHeader.isEmpty()){
+            throw new CustomAuthorizationException(401, violationHeader);
+        }
         Book bookExist = booksRepository.findById(newBook.getIdBook()).map(
                 book -> {
                     book.setTitle(newBook.getTitle());
@@ -141,7 +153,13 @@ public class BooksService  implements BooksDTO {
 
 
     @Override
-    public String deleteBook(String id) throws UserNotExistException {
+    public String deleteBook(HeaderValidationDTO headerValidationDTO,String id) throws UserNotExistException {
+        // Valida el header de autorización
+        Set<ConstraintViolation<HeaderValidationDTO>> violationHeader = validator.validate(headerValidationDTO);
+        if (!violationHeader.isEmpty()){
+            throw new CustomAuthorizationException(401, violationHeader);
+        }
+
         booksRepository.findById(id).orElseThrow(() -> new UserNotExistException(404, "Book not found"));
         booksRepository.deleteById(id);
         return "Book deleted";

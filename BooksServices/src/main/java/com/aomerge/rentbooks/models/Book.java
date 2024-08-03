@@ -1,6 +1,6 @@
 package com.aomerge.rentbooks.models;
 
-import com.aomerge.rentbooks.controllers.Category;
+import com.aomerge.rentbooks.controllers.CategoryController;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -22,7 +22,7 @@ public class Book {
     private int ISBN;
     private int year;
     @DBRef
-    private Category categoryId;
+    private CategoryController categoryId;
     @DBRef
     private Tag tagsId;
     @DBRef
@@ -90,11 +90,11 @@ public class Book {
         this.access = access;
     }
 
-    public Category getCategoryId() {
+    public CategoryController getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(Category categoryId) {
+    public void setCategoryId(CategoryController categoryId) {
         this.categoryId = categoryId;
     }
 

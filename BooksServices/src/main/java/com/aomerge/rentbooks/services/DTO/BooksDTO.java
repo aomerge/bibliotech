@@ -2,6 +2,7 @@ package com.aomerge.rentbooks.services.DTO;
 
 import com.aomerge.rentbooks.config.exeptions.UserNotExistException;
 import com.aomerge.rentbooks.config.validation.books.BaseBookDTO;
+import com.aomerge.rentbooks.config.validation.global.HeaderValidationDTO;
 import com.aomerge.rentbooks.models.Book;
 
 import java.util.List;
@@ -39,16 +40,16 @@ public interface BooksDTO {
      * @param book this is the book that is going to be updated
      * @return Book this is the book that was updated
      * */
-    public Book updateBook(String id, BaseBookDTO book) throws UserNotExistException;
+    public Book updateBook(HeaderValidationDTO headerValidationDTO , String id, BaseBookDTO book) throws UserNotExistException;
     /**this method is used to update a book
      * @param book this is the book that is going to be updated
      * @return Book this is the book that was updated
      * */
-    public Book updateBook(BaseBookDTO book) throws UserNotExistException;
+    public Book updateBook(HeaderValidationDTO headerValidationDTO,BaseBookDTO book) throws UserNotExistException;
     /**this method is used to delete a book
      * @param id this is the id of the book that is going to be deleted
      * */
-    public String deleteBook(String id) throws UserNotExistException;
+    public String deleteBook(HeaderValidationDTO headerValidationDTO,String id) throws UserNotExistException;
 
     /**this method is used to search books
      * @param title this is the title of the book that is going to be searched

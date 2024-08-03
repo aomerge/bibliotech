@@ -6,6 +6,7 @@ import com.aomerge.rentbooks.config.exeptions.UserBadRequest;
 import com.aomerge.rentbooks.config.exeptions.UserNotExistException;
 import com.aomerge.rentbooks.config.validation.books.BaseBookDTO;
 import com.aomerge.rentbooks.config.validation.fit.ValidAuthorizationHeader;
+import com.aomerge.rentbooks.config.validation.global.HeaderValidationDTO;
 import com.aomerge.rentbooks.config.validation.groups.OnCreate;
 import com.aomerge.rentbooks.config.validation.groups.OnUpdate;
 import com.aomerge.rentbooks.config.validation.groups.OnUpdateAll;
@@ -104,7 +105,6 @@ public class BookController {
     @PostMapping( "/book/create")
     public ResponseEntity<?> createBook(
             @Validated(OnCreate.class)
-            @ValidAuthorizationHeader(message = "Authorization header is required and cannot be empty")
             @RequestHeader(name = "Authorization", required = false) String authorizationHeader,
             @RequestBody BaseBookDTO bookDTO,
             BindingResult result
@@ -120,6 +120,10 @@ public class BookController {
             return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
         }
         try{
+            // Valida el header de autorización
+            HeaderValidationDTO headerValidationDTO = new HeaderValidationDTO();
+            headerValidationDTO.setAuthorizationHeader(authorizationHeader);
+            // service
             return ResponseEntity.ok(booksService.createBook(bookDTO, authorizationHeader ));
         }catch (CustomAuthorizationException e) {
             return ResponseEntity.status(401).body(e.getMessage());
@@ -141,13 +145,16 @@ public class BookController {
     @PutMapping("/book/update/{id}")
     public ResponseEntity<?> updateBook(
             @Validated(OnUpdateAll.class)
-            @ValidAuthorizationHeader(message = "Authorization header is required and cannot be empty")
             @RequestHeader(name = "Authorization", required = false) String authorizationHeader,
             @PathVariable String id,
             @RequestBody BaseBookDTO book, BindingResult result
     ) {
         try {
-            return ResponseEntity.ok(booksService.updateBook(id, book));
+            // Valida el header de autorización
+            HeaderValidationDTO headerValidationDTO = new HeaderValidationDTO();
+            headerValidationDTO.setAuthorizationHeader(authorizationHeader);
+            // service
+            return ResponseEntity.ok(booksService.updateBook(headerValidationDTO,id, book));
         } catch (UserBadRequest e){
             return ResponseEntity.status(400).body(e.getMessage());
         }catch (UserNotExistException e) {
@@ -165,7 +172,6 @@ public class BookController {
     @PatchMapping("/book/update")
     public ResponseEntity<?> updateBook(
             @Validated(OnUpdate.class)
-            @ValidAuthorizationHeader(message = "Authorization header is required and cannot be empty")
             @RequestHeader(name = "Authorization", required = false) String authorizationHeader,
             @RequestBody BaseBookDTO book , BindingResult result
     ) {
@@ -179,7 +185,10 @@ public class BookController {
             return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
         }
         try {
-            return ResponseEntity.ok(booksService.updateBook(book));
+            HeaderValidationDTO headerValidationDTO = new HeaderValidationDTO();
+            headerValidationDTO.setAuthorizationHeader(authorizationHeader);
+
+            return ResponseEntity.ok(booksService.updateBook(headerValidationDTO,book));
         } catch (UserNotExistException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         } catch (Exception e) {
@@ -191,14 +200,17 @@ public class BookController {
     @ApiResponse(responseCode = "200", description = "Book deleted")
     @DeleteMapping("/book/delete/{id}")
     public ResponseEntity<?> deleteBook(
-            @ValidAuthorizationHeader(message = "Authorization header is required and cannot be empty")
             @RequestHeader(name = "Authorization", required = false) String authorizationHeader,
             @PathVariable String id
     ) {
         try {
+            // Valida el header de autorización
+            HeaderValidationDTO headerValidationDTO = new HeaderValidationDTO();
+            headerValidationDTO.setAuthorizationHeader(authorizationHeader);
+            // service
             JSONObject response = new JSONObject();
             response.put("code", 200);
-            response.put("message", booksService.deleteBook(id));
+            response.put("message", booksService.deleteBook(headerValidationDTO,id));
             response.put("date", LocalDateTime.now().toString());
             return ResponseEntity.ok(response.toString());
         } catch (UserNotExistException e) {
