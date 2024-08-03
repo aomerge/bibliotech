@@ -1,15 +1,17 @@
 package com.aomerge.userservices.services.serviceDTO;
 
+import com.aomerge.userservices.config.JWT.UserToken;
 import com.aomerge.userservices.config.validation.global.HeaderValidationDTO;
+import com.aomerge.userservices.config.validation.user.BaseUserDTO;
 import com.aomerge.userservices.models.User;
 
 import java.util.List;
 
 public interface UserDTO {
     public List<User> getAllUsers(HeaderValidationDTO token);
-    public User getUserById(String id);
-    public User login(String email, String password);
-    public User save(User user);
+    public User getUserById(HeaderValidationDTO token, String id);
+    public UserToken login(String email, String password);
+    public User save(BaseUserDTO user);
     public User update(User user);
     public void delete(String id);
 }
