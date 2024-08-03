@@ -1,6 +1,6 @@
 package com.aomerge.userservices.config.JWT;
 
-import com.aomerge.rentbooks.config.access.AccesBinary;
+import com.aomerge.userservices.config.access.AccesBinary;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
