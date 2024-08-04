@@ -1,5 +1,6 @@
 package com.aomerge.rentbooks.models;
 
+import com.aomerge.rentbooks.config.type.BookStatus;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -23,9 +24,4 @@ public class BooksInExisten {
     @LastModifiedDate
     private String updatedAt;
 
-    public enum BookStatus {
-        AVAILABLE,
-        OUT_OF_STOCK,
-        RESERVED
-    }
 }
