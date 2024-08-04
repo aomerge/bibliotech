@@ -1,4 +1,9 @@
 package com.aomerge.rentbooks.services;
 
-public class BookExistentService {
+import com.aomerge.rentbooks.services.DTO.BookExistentDTO;
+import org.springframework.stereotype.Service;
+
+@Service
+public class BookExistentService implements BookExistentDTO {
+
 }
