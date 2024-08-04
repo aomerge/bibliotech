@@ -12,7 +12,7 @@ import lombok.Setter;
 public class BaseUserDTO {
     @NotNull(groups = {OnUpdate.class}, message = "El id es requerido")
     private String id;
-    @NotNull(groups = {OnCreate.class}, message = "El nombre es requerido")
+    @NotNull(groups = {OnCreate.class, OnUpdate.class}, message = "El nombre es requerido")
     private String name;
     @NotNull(groups = {OnCreate.class}, message = "El email es requerido")
     private String email;
