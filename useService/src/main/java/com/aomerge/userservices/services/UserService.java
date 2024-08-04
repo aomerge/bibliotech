@@ -85,17 +85,37 @@ public class UserService implements UserDTO {
         userResponse.setName(user.getName());
         userResponse.setEmail(user.getEmail());
         userResponse.setPassword(user.getPassword());
-        userResponse.setRole(user.getRole());
+        userResponse.setRole("USER");
         return usersRepository.save(userResponse);
     }
 
     @Override
-    public User update(User user) {
-        return null;
+    public User update(HeaderValidationDTO token, BaseUserDTO user) {
+        // Validar el header
+        Set<ConstraintViolation<HeaderValidationDTO>> violationHeader = validator.validate(token);
+        if (!violationHeader.isEmpty()) {
+            throw new CustomAuthorizationException(401, "header de autorización inválido");
+        }
+        // Validar el objeto
+        Set<ConstraintViolation<BaseUserDTO>> violations = validator.validate(user);
+        if (!violations.isEmpty()) {
+            throw new UserBadRequest(400, violations.toString());
+        }
+        return usersRepository.findById(user.getId()).map(
+                userResponse -> {
+                    userResponse.setName(user.getName());
+                    return usersRepository.save(userResponse);
+                }).orElseThrow(()-> new UserBadRequest(400, "Usuario no encontrado"));
+
     }
 
     @Override
-    public void delete(String id) {
-
+    public void delete(HeaderValidationDTO token, String id) {
+        // Validar el header
+        Set<ConstraintViolation<HeaderValidationDTO>> violationHeader = validator.validate(token);
+        if (!violationHeader.isEmpty()) {
+            throw new CustomAuthorizationException(401, "header de autorización inválido");
+        }
+        usersRepository.deleteById(id);
     }
 }

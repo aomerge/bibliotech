@@ -12,6 +12,6 @@ public interface UserDTO {
     public User getUserById(HeaderValidationDTO token, String id);
     public UserToken login(String email, String password);
     public User save(BaseUserDTO user);
-    public User update(User user);
-    public void delete(String id);
+    public User update( HeaderValidationDTO token ,BaseUserDTO user);
+    public void delete(HeaderValidationDTO token, String id);
 }

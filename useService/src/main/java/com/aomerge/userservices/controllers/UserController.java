@@ -80,10 +80,15 @@ public class UserController {
 
     @PatchMapping("/users")
     public ResponseEntity<?> update(
-            @RequestBody User user
+            @RequestHeader(value = "Authorization", required = false) String token,
+            @RequestBody BaseUserDTO user
     ) {
         try {
-            return ResponseEntity.ok(userService.update(user));
+            // Valida el header de autorización
+            HeaderValidationDTO headerValidationDTO = new HeaderValidationDTO();
+            headerValidationDTO.setAuthorizationHeader(token);
+            // Service
+            return ResponseEntity.ok(userService.update(headerValidationDTO, user));
         }catch (Exception e) {
             return ResponseEntity.status(500).body(e.getMessage());
         }
@@ -91,11 +96,16 @@ public class UserController {
 
     @DeleteMapping("/users/{id}")
     public ResponseEntity<?> delete(
+            @RequestHeader(name = "Authorization", required = false) String token,
             @PathVariable String id
     ) {
         try {
-            userService.delete(id);
-            return ResponseEntity.ok().build();
+            // Valida el header de autorización
+            HeaderValidationDTO headerValidationDTO = new HeaderValidationDTO();
+            headerValidationDTO.setAuthorizationHeader(token);
+            // Service
+            userService.delete(headerValidationDTO,id);
+            return ResponseEntity.ok().body("User deleted");
         }catch (Exception e) {
             return ResponseEntity.status(500).body(e.getMessage());
         }
