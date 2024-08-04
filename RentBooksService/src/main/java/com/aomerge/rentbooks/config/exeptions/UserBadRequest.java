@@ -1,6 +1,6 @@
 package com.aomerge.rentbooks.config.exeptions;
 
-import com.aomerge.userservices.config.validation.user.BaseUserDTO;
+import com.aomerge.rentbooks.config.validation.baseBookExisten.BaseBookInExistenDTO;
 import jakarta.validation.ConstraintViolation;
 import lombok.Getter;
 import org.json.JSONObject;
@@ -15,7 +15,7 @@ public class UserBadRequest extends RuntimeException {
         super(message);
         this.errorDetails = new ErrorDetails(statusCode, message);
     }
-    public UserBadRequest(int statusCode, Set<ConstraintViolation<BaseUserDTO>> violations) {
+    public UserBadRequest(int statusCode, Set<ConstraintViolation<BaseBookInExistenDTO>> violations) {
         super("Validation failed");
         JSONObject json = new JSONObject();
         for (ConstraintViolation<?> violation : violations) {
