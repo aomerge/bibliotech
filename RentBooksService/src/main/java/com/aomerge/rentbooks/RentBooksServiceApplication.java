@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableMongoAuditing
-@EnableMongoRepositories(basePackages = "com.aomerge.rentbooks.repository")
+@EnableMongoRepositories(basePackages = "com.aomerge.rentbooks.Repository")
 @ComponentScan(basePackages = "com.aomerge.rentbooks")
 public class RentBooksServiceApplication {
 	protected static final Dotenv dotenv = Dotenv.configure().directory("../").load();

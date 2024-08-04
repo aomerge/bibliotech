@@ -15,8 +15,16 @@ public class CustomEnvironmentPostProcessor implements EnvironmentPostProcessor 
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
         System.out.println("Loading custom environment properties...");
 
-        // Load dotenv files
-        Dotenv dotenv = Dotenv.configure().directory("../").load();
+        String activeProfile = environment.getActiveProfiles().length > 0 ? environment.getActiveProfiles()[0] : "default";
+        Dotenv dotenv;
+
+        if ("production".equals(activeProfile)) {
+            // Configuración para producción, usar el directorio actual
+            dotenv = Dotenv.configure().directory("/my-project").load();
+        } else {
+            // Configuración para desarrollo u otros entornos
+            dotenv = Dotenv.configure().directory("../").load();
+        }
 
         Map<String, Object> propertySource = new HashMap<>();
 
