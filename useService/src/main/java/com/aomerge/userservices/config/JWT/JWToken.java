@@ -18,7 +18,7 @@ public class JWToken {
     public static String CreateTokenUserTest(String subject ) {
         AccesBinary acces = new AccesBinary();
         acces.setPermition(acces.READ);
-        acces.setPermition(acces.RESERVE);
+        acces.setPermition(acces.INFO);
         acces.setPermition(acces.RETURN);
         acces.setPermition(acces.BORROW);
 
