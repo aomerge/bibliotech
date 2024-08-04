@@ -5,11 +5,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/books")
-public class BooksExistent {
+@RequestMapping("/api/v1/rent-books-service")
+public class BooksExistentController {
+    private static final String BOOKS = "/api/v1/rent-books-service";
 
-        @GetMapping
-        public String booksExistent() {
-            return "booksExistent";
-        }
+    @GetMapping("/books")
+    public String getAllBooks() {
+        return "books";
+    }
+
+
 }
