@@ -1,6 +1,6 @@
 package com.aomerge.rentbooks.config.exeptions;
 
-import com.aomerge.userservices.config.validation.global.HeaderValidationDTO;
+import com.aomerge.rentbooks.config.validation.global.HeaderValidationDTO;
 import jakarta.validation.ConstraintViolation;
 import org.json.JSONObject;
 

@@ -1,6 +1,6 @@
 package com.aomerge.rentbooks.config.JWT;
 
-import com.aomerge.userservices.models.User;
+import com.aomerge.rentbooks.models.BooksInExisten;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,5 +8,5 @@ import lombok.Setter;
 @Setter
 public class UserToken {
     private String token;
-    private User user;
+    private BooksInExisten booksInExisten;
 }
