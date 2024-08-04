@@ -14,6 +14,14 @@ spring:
           uri: lb://books-service
           predicates:
             - Path=/api/v1/books-service/**
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/user-service/**
+        - id: rent-books-service
+          uri: lb://rent-books-service
+          predicates:
+            - Path=/api/v1/rent-books-service/**
 management:
   endpoints:
     web:
