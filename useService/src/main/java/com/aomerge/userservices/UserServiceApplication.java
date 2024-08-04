@@ -25,7 +25,7 @@ public class UserServiceApplication {
         System.setProperty("ADMIN_PASSWORD_CONFIG", dotenv.get("ADMIN_PASSWORD_CONFIG"));
         System.setProperty("EUREKA_PORT", dotenv.get("EUREKA_PORT"));
         System.setProperty("USER_PORT", dotenv.get("USER_PORT"));
-        System.setProperty("MONGODB_USER", dotenv.get("MONGODB_BOOKS"));
+        System.setProperty("MONGODB_USER", dotenv.get("MONGODB_USER"));
         System.setProperty("JWT_CREATE_KEY", dotenv.get("JWT_CREATE_KEY"));
 
         System.out.println("HOST_CONFIG: " + System.getProperty("HOST_CONFIG"));

@@ -18,5 +18,6 @@ public class BaseAccessDTO {
 
     private User userId;
 
+    @NotNull( groups = {OnUpdate.class}, message = "El rol es requerido")
     private String role;
 }

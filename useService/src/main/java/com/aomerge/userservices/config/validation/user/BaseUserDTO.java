@@ -18,7 +18,8 @@ public class BaseUserDTO {
     private String email;
     @NotNull(groups = {OnCreate.class}, message = "La contraseña es requerida")
     private String password;
-    @NotNull(groups = {OnCreate.class}, message = "El rol es requerido")
+    @NotNull(groups = {OnUpdate.class}, message = "El rol es requerido")
     private String role;
+
     private Access access;
 }

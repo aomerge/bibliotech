@@ -1,5 +1,6 @@
 package com.aomerge.userservices.controllers;
 
+import com.aomerge.userservices.config.exeptions.UserNotExistException;
 import com.aomerge.userservices.config.validation.access.BaseAccessDTO;
 import com.aomerge.userservices.config.validation.global.HeaderValidationDTO;
 import com.aomerge.userservices.repository.AccessRepository;
@@ -42,23 +43,26 @@ public class AccessController {
             HeaderValidationDTO headerValidationDTO = new HeaderValidationDTO();
             headerValidationDTO.setAuthorizationHeader(token);
             // Service
-            return ResponseEntity.ok(accessService.save(headerValidationDTO, access));
+            return ResponseEntity.ok(accessService.update(headerValidationDTO, access));
+        } catch (UserNotExistException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(401).body(e.getMessage());
         }
     }
-    @DeleteMapping("/access")
+    @DeleteMapping("/access/{id}")
     public ResponseEntity<?> delete(
             @RequestHeader(value="Authorization", required = false) String token,
-            @RequestBody BaseAccessDTO access
+            @PathVariable String id
     ) {
         try {
             // Valida el header de autorización
             HeaderValidationDTO headerValidationDTO = new HeaderValidationDTO();
             headerValidationDTO.setAuthorizationHeader(token);
             // Service
-            return ResponseEntity.ok(accessService.save(headerValidationDTO, access));
-        } catch (Exception e) {
+            accessService.delete(headerValidationDTO, id);
+            return ResponseEntity.ok("Acceso eliminado");
+        }catch (Exception e) {
             return ResponseEntity.status(401).body(e.getMessage());
         }
     }

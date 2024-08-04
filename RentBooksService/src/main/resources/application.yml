@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: user-service
+  config:
+    import: "optional:configserver:"
+  cloud:
+    config:
+      uri: http://${HOST_CONFIG}:${PORT_CONFIG}
+      username: ${ADMIN_USER_CONFIG}
+      password: ${ADMIN_PASSWORD_CONFIG}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

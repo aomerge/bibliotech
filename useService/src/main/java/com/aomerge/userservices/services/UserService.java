@@ -78,7 +78,7 @@ public class UserService implements UserDTO {
         // Validar el objeto
         Set<ConstraintViolation<BaseUserDTO>> violations = validator.validate(user, OnCreate.class);
         if (!violations.isEmpty()) {
-            throw new UserBadRequest(400, violations.toString());
+            throw new UserBadRequest(401, violations);
         }
 
         User userResponse = new User();

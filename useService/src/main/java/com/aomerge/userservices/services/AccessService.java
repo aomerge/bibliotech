@@ -1,6 +1,7 @@
 package com.aomerge.userservices.services;
 
 import com.aomerge.userservices.config.access.AccesBinary;
+import com.aomerge.userservices.config.exeptions.UserNotExistException;
 import com.aomerge.userservices.config.validation.access.BaseAccessDTO;
 import com.aomerge.userservices.config.validation.global.HeaderValidationDTO;
 import com.aomerge.userservices.models.Access;
@@ -55,17 +56,38 @@ public class AccessService implements AccessDTO {
     }
 
     @Override
-    public Access update(HeaderValidationDTO token, BaseAccessDTO access) {
+    public Access update(HeaderValidationDTO token, BaseAccessDTO access) throws UserNotExistException {
         Set<ConstraintViolation<HeaderValidationDTO>> violationHeader = validator.validate(token);
         if (!violationHeader.isEmpty()) {
             throw new RuntimeException("header de autorización inválido");
         }
-        
-        return null;
+        User userRequest = usersRepository.findById(access.getUserId().getId()).map(
+                user -> {
+                    user.setRole(access.getRole());
+                    return usersRepository.save(user);
+                }
+        ).orElseThrow(() -> new UserNotExistException(404,"Usuario no encontrado"));
+
+         Access accessModel = accessRepository.findById(access.getId()).map(
+                accessModel1 -> {
+                    AccesBinary accesBinary = new AccesBinary();
+                    accesBinary.savePermition(userRequest.getRole());
+                    accessModel1.setAccesBinary(accesBinary.getPermition());
+                    accessModel1.setUserId(access.getUserId());
+                    return accessRepository.save(accessModel1);
+                }
+        ).orElseThrow(() -> new UserNotExistException(404,"Acceso no encontrado"));
+        return accessModel;
+
     }
 
     @Override
     public void delete(HeaderValidationDTO token, String id) {
+        Set<ConstraintViolation<HeaderValidationDTO>> violationHeader = validator.validate(token);
+        if (!violationHeader.isEmpty()) {
+            throw new RuntimeException("header de autorización inválido");
+        }
+        accessRepository.deleteById(id);
 
     }
 
