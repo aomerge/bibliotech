@@ -8,7 +8,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 @SpringBootApplication
 @EnableEurekaServer
 public class EurekaServerApplication {
-    protected static final Dotenv dotenv = Dotenv.configure().directory("../").load();
+    protected static final Dotenv dotenv = Dotenv.configure().directory("./").load();
     public static void main(String[] args) throws Exception {
         // config properties the system in envorioment variables
         System.setProperty("HOST_CONFIG", dotenv.get("HOST_CONFIG"));

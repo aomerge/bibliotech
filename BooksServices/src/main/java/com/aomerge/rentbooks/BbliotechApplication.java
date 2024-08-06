@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Bean;
 @EnableMongoRepositories(basePackages = "com.aomerge.rentbooks.repository")
 @ComponentScan(basePackages = "com.aomerge.rentbooks")
 public class BbliotechApplication {
-	protected static final Dotenv dotenv = Dotenv.configure().directory("../").load();
+	protected static final Dotenv dotenv = Dotenv.configure().directory("./").load();
 
 	public static void main(String[] args) {
 
