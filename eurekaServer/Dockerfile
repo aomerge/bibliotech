@@ -5,13 +5,10 @@ WORKDIR /app
 VOLUME /tmp
 
 # Make port 8888 available to the world outside this container
-EXPOSE 8081
+EXPOSE 8761
 
 # Copy the .env file into the container
 COPY .env /app/.env
-
-# Copiar el directorio de configuración al contenedor
-COPY config /app/config
 
 # The application's jar file
 ARG JAR_FILE=target/*.jar
