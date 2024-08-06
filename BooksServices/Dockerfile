@@ -10,9 +10,6 @@ EXPOSE 8081
 # Copy the .env file into the container
 COPY .env /books-service/.env
 
-# Copiar el directorio de configuración al contenedor
-COPY config /books-service/config
-
 # The application's jar file
 ARG JAR_FILE=target/booksService-0.0.1-SNAPSHOT.jar
 
