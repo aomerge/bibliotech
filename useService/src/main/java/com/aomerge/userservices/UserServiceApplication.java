@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @ComponentScan(basePackages = "com.aomerge.userservices")
 public class UserServiceApplication {
 
-    protected static final Dotenv dotenv = Dotenv.configure().directory("../").load();
+    protected static final Dotenv dotenv = Dotenv.configure().directory("./").load();
 
     public static void main(String[] args) {
 

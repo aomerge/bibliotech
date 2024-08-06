@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories(basePackages = "com.aomerge.rentbooks.Repository")
 @ComponentScan(basePackages = "com.aomerge.rentbooks")
 public class RentBooksServiceApplication {
-	protected static final Dotenv dotenv = Dotenv.configure().directory("../").load();
+	protected static final Dotenv dotenv = Dotenv.configure().directory("./").load();
 
 	public static void main(String[] args) {
 		System.setProperty("HOST_CONFIG", dotenv.get("HOST_CONFIG"));
