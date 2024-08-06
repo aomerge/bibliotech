@@ -1,49 +1,25 @@
 version: '3.8'
 
 services:
-  mongo1:
-    image: mongo:latest
-    container_name: mongo1
+  config-server:
+    build:
+      context: ./configServer
+      dockerfile: Dockerfile
+    container_name: config-server
     ports:
-      - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root1
-      MONGO_INITDB_ROOT_PASSWORD: example1
+      - "8888:8888"
 
-  mongo2:
-    image: mongo:latest
-    container_name: mongo2
-    ports:
-      - "27018:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root2
-      MONGO_INITDB_ROOT_PASSWORD: example2
-
-  mongo3:
-    image: mongo:latest
-    container_name: mongo3
-    ports:
-      - "27019:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root3
-      MONGO_INITDB_ROOT_PASSWORD: example3
-
-  mongoclient:
-    image: mongoclient/mongoclient:latest
-    container_name: mongoclient
-    depends_on:
-      - mongo1
-      - mongo2
-      - mongo3
-    ports:
-      - "3000:3000"
-    environment:
-      MONGOCLIENT_URL: "mongodb://root1:example1@mongo1:27017,mongodb://root2:example2@mongo2:27017,mongodb://root3:example3@mongo3:27017"
-      ME_CONFIG_OPTIONS_EDITORTHEME: "default"
-      ME_CONFIG_BASICAUTH_USERNAME: "admin"
-      ME_CONFIG_BASICAUTH_PASSWORD: "admin"
-
+  eureka-server:
+      build:
+        context: ./eurekaServer
+        dockerfile: Dockerfile
+      container_name: eureka-server
+      ports:
+        - "8761:8761"
+      depends_on:
+        - config-server
 networks:
-  default:
+  EurekaNet:
     driver: bridge
+
 
