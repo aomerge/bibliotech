@@ -6,6 +6,8 @@ services:
       context: ./configServer
       dockerfile: Dockerfile
     container_name: config-server
+    networks:
+        - EurekaNet
     ports:
       - "8888:8888"
 
@@ -16,6 +18,8 @@ services:
       container_name: eureka-server
       ports:
         - "8761:8761"
+      networks:
+            - EurekaNet
       depends_on:
         - config-server
 networks:
