@@ -1,21 +1,25 @@
+# Start whith a base image containing Java runtime
+FROM openjdk:17-jdk-alpine
+WORKDIR /books-service
+# Add a volume pointing to /tmp
+VOLUME /tmp
 
-# Etapa de construcción
-FROM maven:3.8.8-eclipse-temurin-17 AS build
-WORKDIR /home/maven/project
-COPY . .
-RUN mvn clean package -DskipTests
+# Make port 8888 available to the world outside this container
+EXPOSE 8081
 
-# Etapa final
-FROM eclipse-temurin:17
-WORKDIR /my-project
+# Copy the .env file into the container
+COPY .env /books-service/.env
 
-# Copiar el archivo .env al contenedor (si es necesario)
-COPY .env ../.env
+# Copiar el directorio de configuración al contenedor
+COPY config /books-service/config
 
-# Copiar el archivo JAR desde la etapa de construcción
-COPY --from=build /home/maven/project/target/*.jar app.jar
+# The application's jar file
+ARG JAR_FILE=target/booksService-0.0.1-SNAPSHOT.jar
 
-# Definir un único ENTRYPOINT
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Add the application's jar to the container
+ADD ${JAR_FILE} app.jar
+
+# Run the jar file
+ENTRYPOINT ["java","-jar","/books-service/app.jar"]
 
 

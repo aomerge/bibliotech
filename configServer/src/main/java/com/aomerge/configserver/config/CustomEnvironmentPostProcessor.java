@@ -1,6 +1,7 @@
 package com.aomerge.configserver.config;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import io.github.cdimascio.dotenv.DotenvException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -19,12 +20,11 @@ public class CustomEnvironmentPostProcessor implements EnvironmentPostProcessor 
         Dotenv dotenv;
 
         if ("production".equals(activeProfile)) {
-            // Configuración para producción, usar el directorio actual
-            dotenv = Dotenv.configure().directory("/my-project").load();
+            dotenv = Dotenv.configure().directory("/config-server").load();
         } else {
-            // Configuración para desarrollo u otros entornos
-            dotenv = Dotenv.configure().directory("../").load();
+            dotenv = Dotenv.configure().directory("./").load();
         }
+
 
         Map<String, Object> propertySource = new HashMap<>();
 
