@@ -17,4 +17,4 @@ ARG JAR_FILE=target/*.jar
 ADD ${JAR_FILE} app.jar
 
 # Run the jar file
-ENTRYPOINT ["java","-jar","/app/app.jar"]
+ENTRYPOINT ["sh","-c", "sleep 15 && java -jar /app/app.jar"]

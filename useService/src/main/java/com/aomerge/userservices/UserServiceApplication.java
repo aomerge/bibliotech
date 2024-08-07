@@ -15,9 +15,16 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @ComponentScan(basePackages = "com.aomerge.userservices")
 public class UserServiceApplication {
 
-    protected static final Dotenv dotenv = Dotenv.configure().directory("./").load();
-
     public static void main(String[] args) {
+
+        String activeProfile = System.getProperty("spring.profiles.active", "default");
+
+        Dotenv dotenv;
+        if ("production".equals(activeProfile)) {
+            dotenv = Dotenv.configure().directory("./").load();
+        } else {
+            dotenv = Dotenv.configure().directory("./").load();
+        }
 
         System.setProperty("HOST_CONFIG", dotenv.get("HOST_CONFIG"));
         System.setProperty("PORT_CONFIG", dotenv.get("PORT_CONFIG"));

@@ -34,6 +34,36 @@ services:
     depends_on:
       - config-server
       - eureka-server
+
+  user-service:
+    build:
+      context: ./useService
+      dockerfile: Dockerfile
+    container_name: user-service
+    environment:
+        - SPRING_PROFILES_ACTIVE=production
+    networks:
+        - EurekaNet
+    ports:
+      - "8082:8082"
+    depends_on:
+      - config-server
+      - eureka-server
+
+  rent-book-service:
+    build:
+      context: ./RentBooksService
+      dockerfile: Dockerfile
+    container_name: rent-book-service
+    environment:
+        - SPRING_PROFILES_ACTIVE=production
+    networks:
+        - EurekaNet
+    ports:
+      - "8083:8083"
+    depends_on:
+      - config-server
+      - eureka-server
 networks:
   EurekaNet:
     driver: bridge

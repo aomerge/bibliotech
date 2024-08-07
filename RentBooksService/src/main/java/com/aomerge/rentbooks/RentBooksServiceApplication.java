@@ -15,9 +15,19 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories(basePackages = "com.aomerge.rentbooks.Repository")
 @ComponentScan(basePackages = "com.aomerge.rentbooks")
 public class RentBooksServiceApplication {
-	protected static final Dotenv dotenv = Dotenv.configure().directory("./").load();
 
 	public static void main(String[] args) {
+
+		String activeProfile = System.getProperty("spring.profiles.active", "default");
+
+		Dotenv dotenv;
+		if ("production".equals(activeProfile)) {
+			dotenv = Dotenv.configure().directory("./").load();
+		} else {
+			dotenv = Dotenv.configure().directory("./").load();
+		}
+
+		System.setProperty("HOST_EUREKA", dotenv.get("HOST_EUREKA"));
 		System.setProperty("HOST_CONFIG", dotenv.get("HOST_CONFIG"));
 		System.setProperty("PORT_CONFIG", dotenv.get("PORT_CONFIG"));
 		System.setProperty("ADMIN_USER_CONFIG", dotenv.get("ADMIN_USER_CONFIG"));
@@ -27,6 +37,7 @@ public class RentBooksServiceApplication {
 		System.setProperty("MONGODB_RENT_BOOKS", dotenv.get("MONGODB_RENT_BOOKS"));
 		System.setProperty("JWT_CREATE_KEY", dotenv.get("JWT_CREATE_KEY"));
 
+		System.out.println("HOST_EUREKA: " + System.getProperty("HOST_EUREKA"));
 		System.out.println("HOST_CONFIG: " + System.getProperty("HOST_CONFIG"));
 		System.out.println("PORT_CONFIG: " + System.getProperty("PORT_CONFIG"));
 		System.out.println("ADMIN_USER_CONFIG: " + System.getProperty("ADMIN_USER_CONFIG"));
