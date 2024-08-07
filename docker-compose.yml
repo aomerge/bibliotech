@@ -22,6 +22,20 @@ services:
             - EurekaNet
       depends_on:
         - config-server
+  book-service:
+    build:
+      context: ./bookService
+      dockerfile: Dockerfile
+    container_name: book-service
+    environment:
+        - SPRING_PROFILES_ACTIVE=production
+    networks:
+        - EurekaNet
+    ports:
+      - "8081:8081"
+    depends_on:
+      - eureka-server
+      - config-server
 networks:
   EurekaNet:
     driver: bridge
