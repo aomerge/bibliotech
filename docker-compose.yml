@@ -20,11 +20,9 @@ services:
         - "8761:8761"
       networks:
             - EurekaNet
-      depends_on:
-        - config-server
   book-service:
     build:
-      context: ./bookService
+      context: ./BooksServices
       dockerfile: Dockerfile
     container_name: book-service
     environment:
@@ -34,8 +32,8 @@ services:
     ports:
       - "8081:8081"
     depends_on:
-      - eureka-server
       - config-server
+      - eureka-server
 networks:
   EurekaNet:
     driver: bridge
