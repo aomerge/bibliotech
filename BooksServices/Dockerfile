@@ -17,4 +17,4 @@ ARG JAR_FILE=target/booksService-0.0.1-SNAPSHOT.jar
 ADD ${JAR_FILE} app.jar
 
 # Run the jar file
-ENTRYPOINT ["java","-jar","/books-service/app.jar"]
+ENTRYPOINT [ "sh", "-c", "sleep 15 && java -jar /books-service/app.jar" ]
