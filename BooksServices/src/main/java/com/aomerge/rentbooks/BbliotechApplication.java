@@ -34,6 +34,7 @@ public class BbliotechApplication {
 			dotenv = Dotenv.configure().directory("./").load();
 		}
 
+		System.setProperty("HOST_EUREKA", dotenv.get("HOST_EUREKA"));
 		System.setProperty("HOST_CONFIG", dotenv.get("HOST_CONFIG"));
 		System.setProperty("PORT_CONFIG", dotenv.get("PORT_CONFIG"));
 		System.setProperty("ADMIN_USER_CONFIG", dotenv.get("ADMIN_USER_CONFIG"));
@@ -42,6 +43,7 @@ public class BbliotechApplication {
 		System.setProperty("BOOKS_PORT", dotenv.get("BOOKS_PORT"));
 		System.setProperty("MONGODB_BOOKS", dotenv.get("MONGODB_BOOKS"));
 		System.setProperty("JWT_CREATE_KEY", dotenv.get("JWT_CREATE_KEY"));
+
 		System.out.println("Environment variables loaded");
 		System.out.println("HOST_CONFIG: " + System.getProperty("HOST_CONFIG"));
 		System.out.println("PORT_CONFIG: " + System.getProperty("PORT_CONFIG"));
