@@ -36,11 +36,6 @@ public class UserServiceApplication {
         System.setProperty("MONGODB_USER", dotenv.get("MONGODB_USER"));
         System.setProperty("JWT_CREATE_KEY", dotenv.get("JWT_CREATE_KEY"));
 
-        System.out.println("HOST_CONFIG: " + System.getProperty("HOST_CONFIG"));
-        System.out.println("PORT_CONFIG: " + System.getProperty("PORT_CONFIG"));
-        System.out.println("ADMIN_USER_CONFIG: " + System.getProperty("ADMIN_USER_CONFIG"));
-        System.out.println("ADMIN_PASSWORD_CONFIG: " + System.getProperty("ADMIN_PASSWORD_CONFIG"));
-
         SpringApplication.run(UserServiceApplication.class, args);
     }
 }

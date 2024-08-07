@@ -20,6 +20,20 @@ services:
         - "8761:8761"
       networks:
             - EurekaNet
+  api-gateway:
+    build:
+      context: ./apiGateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    environment:
+      - SPRING_PROFILES_ACTIVE=production
+    networks:
+        - EurekaNet
+    ports:
+      - "8080:8080"
+    depends_on:
+      - config-server
+      - eureka-server
   book-service:
     build:
       context: ./BooksServices
