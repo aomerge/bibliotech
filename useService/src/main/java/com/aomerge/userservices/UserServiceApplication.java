@@ -26,6 +26,7 @@ public class UserServiceApplication {
             dotenv = Dotenv.configure().directory("./").load();
         }
 
+        System.setProperty("HOST_EUREKA", dotenv.get("HOST_EUREKA"));
         System.setProperty("HOST_CONFIG", dotenv.get("HOST_CONFIG"));
         System.setProperty("PORT_CONFIG", dotenv.get("PORT_CONFIG"));
         System.setProperty("ADMIN_USER_CONFIG", dotenv.get("ADMIN_USER_CONFIG"));
