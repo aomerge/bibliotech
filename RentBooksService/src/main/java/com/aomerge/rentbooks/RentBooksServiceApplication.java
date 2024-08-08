@@ -38,10 +38,6 @@ public class RentBooksServiceApplication {
 		System.setProperty("JWT_CREATE_KEY", dotenv.get("JWT_CREATE_KEY"));
 
 		System.out.println("HOST_EUREKA: " + System.getProperty("HOST_EUREKA"));
-		System.out.println("HOST_CONFIG: " + System.getProperty("HOST_CONFIG"));
-		System.out.println("PORT_CONFIG: " + System.getProperty("PORT_CONFIG"));
-		System.out.println("ADMIN_USER_CONFIG: " + System.getProperty("ADMIN_USER_CONFIG"));
-		System.out.println("ADMIN_PASSWORD_CONFIG: " + System.getProperty("ADMIN_PASSWORD_CONFIG"));
 
 		SpringApplication.run(RentBooksServiceApplication.class, args);
 	}
