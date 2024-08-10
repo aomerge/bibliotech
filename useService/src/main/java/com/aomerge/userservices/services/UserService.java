@@ -54,7 +54,9 @@ public class UserService implements UserDTO {
 
     @Override
     public UserToken login(String email, String password) {
-        if (usersRepository.findByEmail(email) == null) {
+        User user = usersRepository.findByEmail(email);
+        System.out.println(user);
+        if (user == null) {
             throw new UserBadRequest(400, "Usuario no encontrado");
         }
         User userResponse = usersRepository.findByEmailAndPassword(email, password);
@@ -62,7 +64,7 @@ public class UserService implements UserDTO {
             throw new UserBadRequest(400, "Contraseña incorrecta");
         }
         Access access = accessRepository.findByUserId(userResponse.getId())
-                .orElseThrow(()-> new UserBadRequest(400, "Usuario no encontrado"));
+                .orElseThrow(()-> new UserBadRequest(400, "Acces no encontrado"));
 
 
         UserToken userToken = new UserToken();
@@ -99,7 +101,7 @@ public class UserService implements UserDTO {
         // Validar el objeto
         Set<ConstraintViolation<BaseUserDTO>> violations = validator.validate(user);
         if (!violations.isEmpty()) {
-            throw new UserBadRequest(400, violations.toString());
+            throw new UserBadRequest(400, violations);
         }
         return usersRepository.findById(user.getId()).map(
                 userResponse -> {

@@ -1,5 +1,6 @@
 package com.aomerge.userservices.config.validation.access;
 
+import com.aomerge.userservices.config.validation.groups.OnCreate;
 import com.aomerge.userservices.config.validation.groups.OnUpdate;
 import com.aomerge.userservices.models.User;
 import jakarta.validation.constraints.NotNull;
@@ -16,6 +17,7 @@ public class BaseAccessDTO {
 
     private byte accesBinary;
 
+    @NotNull( groups = {OnCreate.class}, message = "El usuario es requerido")
     private User userId;
 
     @NotNull( groups = {OnUpdate.class}, message = "El rol es requerido")

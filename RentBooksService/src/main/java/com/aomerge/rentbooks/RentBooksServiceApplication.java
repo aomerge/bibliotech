@@ -24,7 +24,7 @@ public class RentBooksServiceApplication {
 		if ("production".equals(activeProfile)) {
 			dotenv = Dotenv.configure().directory("./").load();
 		} else {
-			dotenv = Dotenv.configure().directory("./").load();
+			dotenv = Dotenv.configure().directory("../").load();
 		}
 
 		System.setProperty("HOST_EUREKA", dotenv.get("HOST_EUREKA"));

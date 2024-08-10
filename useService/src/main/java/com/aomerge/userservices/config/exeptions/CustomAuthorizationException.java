@@ -11,7 +11,7 @@ public class CustomAuthorizationException extends RuntimeException{
     private String error;
     private final ErrorDetails errorDetails;
 
-    public CustomAuthorizationException(int status, Set<ConstraintViolation<HeaderValidationDTO>> violations) {
+    public CustomAuthorizationException(int status, Set<? extends ConstraintViolation<?>> violations) {
         super("Validation failed");
         this.status = status;
         JSONObject json = new JSONObject();

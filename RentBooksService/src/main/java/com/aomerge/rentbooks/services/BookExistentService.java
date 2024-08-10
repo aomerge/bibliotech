@@ -1,6 +1,7 @@
 package com.aomerge.rentbooks.services;
 
 import com.aomerge.rentbooks.Repository.BookInExistenRepositry;
+import com.aomerge.rentbooks.config.exeptions.UserBadRequest;
 import com.aomerge.rentbooks.config.validation.baseBookExisten.BaseBookInExistenDTO;
 import com.aomerge.rentbooks.config.validation.global.HeaderValidationDTO;
 import com.aomerge.rentbooks.config.validation.groups.OnCreate;
@@ -55,7 +56,7 @@ public class BookExistentService implements BookExistentDTO {
         // Validation Body
         Set<ConstraintViolation<BaseBookInExistenDTO>> violationBody = validator.validate(booksInExisten, OnCreate.class);
         if (!violationBody.isEmpty()) {
-            throw new RuntimeException("Datos de libro inválidos");
+            throw new UserBadRequest(400, violationBody);
         }
         BooksInExisten booksInExistenModel = new BooksInExisten();
         booksInExistenModel.setIdBook(booksInExisten.getIdBook());

@@ -1,9 +1,12 @@
 package com.aomerge.userservices.services;
 
 import com.aomerge.userservices.config.access.AccesBinary;
+import com.aomerge.userservices.config.exeptions.CustomAuthorizationException;
+import com.aomerge.userservices.config.exeptions.UserBadRequest;
 import com.aomerge.userservices.config.exeptions.UserNotExistException;
 import com.aomerge.userservices.config.validation.access.BaseAccessDTO;
 import com.aomerge.userservices.config.validation.global.HeaderValidationDTO;
+import com.aomerge.userservices.config.validation.groups.OnCreate;
 import com.aomerge.userservices.models.Access;
 import com.aomerge.userservices.models.User;
 import com.aomerge.userservices.repository.AccessRepository;
@@ -39,20 +42,32 @@ public class AccessService implements AccessDTO {
     public Access save(HeaderValidationDTO token, BaseAccessDTO access) {
         Set<ConstraintViolation<HeaderValidationDTO>> violationHeader = validator.validate(token);
         if (!violationHeader.isEmpty()) {
-            throw new RuntimeException("header de autorización inválido");
+            throw new CustomAuthorizationException(401, "header de autorización inválido");
+        }
+
+        Set<ConstraintViolation<BaseAccessDTO>> violation = validator.validate(access, OnCreate.class);
+        if (!violation.isEmpty()) {
+            throw new CustomAuthorizationException(400, violation);
         }
 
         User userRequest = usersRepository.findById(access.getUserId().getId()).orElse(null);
         if (userRequest == null) {
-            throw new RuntimeException("Usuario no encontrado");
+            throw new UserBadRequest(400, "Usuario no encontrado");
         }
+
         Access accessModel = new Access();
-        accessModel.setBranchOffice(access.getBranchOffice());
+
         AccesBinary accesBinary = new AccesBinary();
         accesBinary.savePermition(userRequest.getRole());
+
         accessModel.setAccesBinary(accesBinary.getPermition());
-        accessModel.setUserId(access.getUserId());
-        return accessRepository.save(accessModel);
+        accessModel.setBranchOffice(access.getBranchOffice());
+        accessModel.setUserId(userRequest);
+        //accessModel.getUserId().setAccess(accessModel.getId());
+        Access save =  accessRepository.save(accessModel);
+        userRequest.setAccess(save.getId());
+        usersRepository.save(userRequest);
+        return  save;
     }
 
     @Override

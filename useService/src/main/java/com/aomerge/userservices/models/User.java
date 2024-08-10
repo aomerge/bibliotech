@@ -20,8 +20,7 @@ public class User {
     private String email;
     private String password;
     private String role;
-    @DBRef
-    private Access access;
+    private String access;
     @CreatedDate
     private Date createdAt;
     @LastModifiedDate

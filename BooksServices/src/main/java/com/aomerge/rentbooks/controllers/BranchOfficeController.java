@@ -94,7 +94,7 @@ public class BranchOfficeController  {
     @ApiResponse(responseCode = "200", description = "Return Branch Office deleted")
     @ApiResponse(responseCode = "400", description = "Error in the request")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    @DeleteMapping(BRANCH_OFFICE + "/BranchOffice/Deleted/{id}")
+    @DeleteMapping(BRANCH_OFFICE + "/BranchOffice/{id}")
     public ResponseEntity<?> DeletedBranchOffice (
             @RequestHeader(name = "Authorization", required = false) String authorizationHeader,
             @PathVariable String id

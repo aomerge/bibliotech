@@ -36,7 +36,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/user/{id}")
     public ResponseEntity<?> getUserById(
             @RequestHeader(value = "Authorization", required = false) String token,
             @PathVariable String id
@@ -78,7 +78,7 @@ public class UserController {
         }
     }
 
-    @PatchMapping("/users")
+    @PatchMapping("/user")
     public ResponseEntity<?> update(
             @RequestHeader(value = "Authorization", required = false) String token,
             @RequestBody BaseUserDTO user
@@ -94,7 +94,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/user/{id}")
     public ResponseEntity<?> delete(
             @RequestHeader(name = "Authorization", required = false) String token,
             @PathVariable String id
