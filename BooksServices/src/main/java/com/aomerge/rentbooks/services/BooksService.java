@@ -116,7 +116,6 @@ public class BooksService  implements BooksDTO {
                     book.setDescription(newBook.getDescription());
                     book.setImage(newBook.getImage());
                     book.setAccess(newBook.getAccess());
-                    book.setCategoryId(newBook.getCategoryId());
                     book.setTagsId(newBook.getTagsId());
                     book.setPublishedAt(newBook.getPublishedAt());
                     book.setYear(newBook.getYear());
@@ -171,7 +170,7 @@ public class BooksService  implements BooksDTO {
      * */
     @Override
     public List<Book> searchBooks(String title) {
-        return booksRepository.findByTitle(title);
+        return booksRepository.findByTitleRegex(title);
     }
 
     /**this method is used to create a sample book

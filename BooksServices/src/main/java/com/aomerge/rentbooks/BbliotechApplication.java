@@ -31,7 +31,7 @@ public class BbliotechApplication {
 		if ("production".equals(activeProfile)) {
 			dotenv = Dotenv.configure().directory("./").load();
 		} else {
-			dotenv = Dotenv.configure().directory("./").load();
+			dotenv = Dotenv.configure().directory("../").load();
 		}
 
 		System.setProperty("HOST_EUREKA", dotenv.get("HOST_EUREKA"));
@@ -43,10 +43,6 @@ public class BbliotechApplication {
 		System.setProperty("BOOKS_PORT", dotenv.get("BOOKS_PORT"));
 		System.setProperty("MONGODB_BOOKS", dotenv.get("MONGODB_BOOKS"));
 		System.setProperty("JWT_CREATE_KEY", dotenv.get("JWT_CREATE_KEY"));
-
-		System.out.println("Environment variables loaded");
-		System.out.println("HOST_CONFIG: " + System.getProperty("HOST_CONFIG"));
-		System.out.println("PORT_CONFIG: " + System.getProperty("PORT_CONFIG"));
 
 		SpringApplication.run(BbliotechApplication.class, args);
 	}

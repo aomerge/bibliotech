@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 
 @RestController
+@RequestMapping("/api/v1")
 public class BranchOfficeController  {
 
     @Autowired
     private BranchOfficeDTO branchService;
-    private static final String BRANCH_OFFICE = "/api/v1/books-service";
+    private static final String BRANCH_OFFICE = "/books-service";
 
     @Operation(summary = "Get all Branch Office")
     @ApiResponse(responseCode = "200", description = "Return all Branch Office")

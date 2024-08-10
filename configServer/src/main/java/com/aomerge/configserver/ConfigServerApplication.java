@@ -1,5 +1,6 @@
 package com.aomerge.configserver;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.config.server.EnableConfigServer;
@@ -19,7 +20,7 @@ public class ConfigServerApplication {
 		} else {
 			dotenv = Dotenv.configure().directory("./").load();
 		}
-    
+		System.setProperty("PATH_CONFIG", dotenv.get("PATH_CONFIG"));
 		System.setProperty("HOST_CONFIG", dotenv.get("HOST_CONFIG"));
 		System.setProperty("PORT_CONFIG", dotenv.get("PORT_CONFIG"));
 		System.setProperty("ADMIN_USER_CONFIG", dotenv.get("ADMIN_USER_CONFIG"));

@@ -16,10 +16,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/v1")
 public class CategoryController {
     @Autowired
     private CategoryDTO categoryService;
-    private static final String CATEGORY = "/api/v1/books-service";
+    private static final String CATEGORY = "/books-service";
     @Operation(summary = "Get all categories")
     @ApiResponse(responseCode = "200", description = "Return all categories")
     @ApiResponse(responseCode = "400", description = "Error in the request")
@@ -41,7 +42,6 @@ public class CategoryController {
            @PathVariable String id
     ) {
         try{
-            System.out.println("id: " + id);
             return ResponseEntity.ok(categoryService.getCategory(id));
         }catch (UserNotExistException e){
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -88,7 +88,7 @@ public class CategoryController {
         }catch (UserNotExistException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(500).body(e.getMessage());
         }
     }
 

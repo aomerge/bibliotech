@@ -75,27 +75,62 @@ public class CategoryService implements CategoryDTO {
         // validation Header
         Set<ConstraintViolation<HeaderValidationDTO>> violationHeader = validator.validate(authorizationHeader);
         if (!violationHeader.isEmpty()){
-            throw new CustomAuthorizationException(401,violationHeader.toString() );
+            throw new CustomAuthorizationException(401,violationHeader);
         }
         // validation Body
         Set<ConstraintViolation<BaseCaterogyDTO>> violationsBody = validator.validate(category, OnUpdateByBook.class);
         if(!violationsBody.isEmpty()) {
-            throw new UserBadRequest(401,violationsBody.toString());
+            throw new UserBadRequest(401, violationsBody);
         }
+        // get the books
         List<Book> books = bookRepository.findAllById(category.getBooks().stream()
                 .map(Book::getId)
                 .collect(Collectors.toList()));
-
+        // get the category and add the books
         Category categoryRequest = categoryRepository.findById(category.getId()).map(
-                categoyBook -> {
-                    List<Book> existingBooks = categoyBook.getBooks();
+                categoryBook -> {
+                    // get the existing books
+                    List<Book> existingBooks = categoryBook.getBooks();
+                    // if the category does not have books, create a new list
+                    if (existingBooks == null) {
+                        existingBooks = new ArrayList<>();
+                        categoryBook.setBooks(existingBooks);
+                    }
+                    // set the category to the books
+                    for (Book newBook : books) {
+                        if (existingBooks.stream().anyMatch(book -> book.getId().equals(newBook.getId()))) {
+                            try {
+                                throw new UserNotExistException(404, "Book already exists in the category");
+                            } catch (UserNotExistException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    }
+                    // if the book already exists in the category, throw an exception
+                    existingBooks.stream().filter(book -> category.getBooks().stream()
+                            .anyMatch(newBook -> newBook.getId().equals(book.getId()) ) )
+                            .findFirst()
+                            .ifPresent(book -> {
+                                try {
+                                    throw new UserNotExistException(404, "Book already exists in the category");
+                                } catch (UserNotExistException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            });
+
+                    // add the new books to the existing list
                     existingBooks.addAll(books);
-                    categoyBook.setBooks(category.getBooks());
-                    return categoyBook;
+
+                    return categoryBook;
                 })
                 .orElseThrow(()-> new UserNotExistException(404,"Category not found"));
-
         categoryRepository.save(categoryRequest);
+        for (Book book : books) {
+            if (book.getCategoryId() == null ) {
+                book.setCategoryId(categoryRequest.getId());
+                bookRepository.save(book); // Asegurarse de que el libro se guarde con la categoría actualizada
+            }
+        }
     }
 
     @Override

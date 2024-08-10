@@ -40,7 +40,7 @@ public class BookController {
 
     @Operation(summary = "Hello", description = "Hello")
     @ApiResponse(responseCode = "200", description = "Hello")
-    @GetMapping("/api/v1/books-service/hello")
+    @GetMapping("/hello")
     public ResponseEntity<?> Hello() {
         return ResponseEntity.ok("Hello");
     }

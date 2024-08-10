@@ -23,6 +23,7 @@ public class BaseCaterogyDTO {
     @NotNull(groups = OnUpdateByBook.class, message = "Book is required")
     public List<Book> books;
 
+
     public @NotNull(groups = OnUpdate.class, message = "Id is required") String getId() {
         return Id;
     }
