@@ -138,12 +138,12 @@ public class CategoryService implements CategoryDTO {
         // validation Header
         Set<ConstraintViolation<HeaderValidationDTO>> violationHeader = validator.validate(authorizationHeader);
         if (!violationHeader.isEmpty()){
-            throw new CustomAuthorizationException(401,violationHeader.toString() );
+            throw new CustomAuthorizationException(401,violationHeader );
         }
         // validation Body
         Set<ConstraintViolation<BaseCaterogyDTO>> violationsBody = validator.validate(category, OnUpdate.class);
         if(!violationsBody.isEmpty()) {
-            throw new UserBadRequest(401,violationsBody.toString());
+            throw new UserBadRequest(401,violationsBody);
         }
 
         Category categoryRequest = categoryRepository.findById(category.getId()).map(
@@ -154,6 +154,8 @@ public class CategoryService implements CategoryDTO {
                 }
                 )
                 .orElseThrow(()-> new UserNotExistException(404,"Category not found"));
+
+        categoryRepository.save(categoryRequest);
 
     }
 

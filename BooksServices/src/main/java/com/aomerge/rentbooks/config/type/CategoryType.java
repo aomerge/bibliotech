@@ -1,6 +1,7 @@
 package com.aomerge.rentbooks.config.type;
 
 public enum CategoryType {
+    ACTION,
     NOVEL,
     SCIENCE_FICTION,
     FANTASY,
