@@ -47,7 +47,7 @@ public class BranchOfficeController  {
     @ApiResponse(responseCode = "200", description = "Return Branch Office created")
     @ApiResponse(responseCode = "400", description = "Error in the request")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    @PostMapping(BRANCH_OFFICE + "/BranchOffice/Create")
+    @PostMapping(BRANCH_OFFICE + "/BranchOffice")
     public ResponseEntity<?> CreateBranchOffice(
             @RequestHeader(name = "Authorization", required = false) String authorizationHeader,
             @RequestBody BaseBranchOfficeDTO branch
@@ -69,7 +69,7 @@ public class BranchOfficeController  {
     @ApiResponse(responseCode = "200", description = "Return Branch Office updated")
     @ApiResponse(responseCode = "400", description = "Error in the request")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    @PatchMapping(BRANCH_OFFICE + "/BranchOffice/update/")
+    @PatchMapping(BRANCH_OFFICE + "/BranchOffice")
     public ResponseEntity<?> putBranchOffice (
             @RequestHeader(name = "Authorization", required = false) String authorizationHeader,
             @RequestBody BaseBranchOfficeDTO branch

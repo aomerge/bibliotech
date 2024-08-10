@@ -2,6 +2,7 @@ package com.aomerge.rentbooks.config.exeptions;
 
 import com.aomerge.rentbooks.config.exeptions.ErrorDetails;
 import com.aomerge.rentbooks.config.validation.books.BaseBookDTO;
+import com.aomerge.rentbooks.config.validation.branchOffice.BaseBranchOfficeDTO;
 import com.aomerge.rentbooks.config.validation.category.BaseCaterogyDTO;
 import jakarta.validation.ConstraintViolation;
 import lombok.Getter;
@@ -17,7 +18,8 @@ public class UserBadRequest extends RuntimeException {
         super(message);
         this.errorDetails = new ErrorDetails(statusCode, message);
     }
-    public UserBadRequest(int statusCode, Set<ConstraintViolation<BaseCaterogyDTO>> violations) {
+
+    public UserBadRequest(int statusCode, Set<? extends ConstraintViolation<?>> violations) {
         super("Validation failed");
         JSONObject json = new JSONObject();
         for (ConstraintViolation<?> violation : violations) {
@@ -33,6 +35,7 @@ public class UserBadRequest extends RuntimeException {
         }
         this.errorDetails = new ErrorDetails(json.toString());
     }
+
 
     @Override
     public String getMessage() {

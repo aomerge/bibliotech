@@ -17,6 +17,7 @@ import com.aomerge.rentbooks.models.Book;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 @Service
 public class BooksService  implements BooksDTO {
