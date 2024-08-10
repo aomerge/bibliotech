@@ -164,7 +164,7 @@ public class CategoryService implements CategoryDTO {
         // validation Header
         Set<ConstraintViolation<HeaderValidationDTO>> violationHeader = validator.validate(authorizationHeader);
         if (!violationHeader.isEmpty()){
-            throw new CustomAuthorizationException(401,violationHeader.toString() );
+            throw new CustomAuthorizationException(401,violationHeader);
         }
 
         Category categoryRequest = categoryRepository.findById(id).orElseThrow(()-> new UserNotExistException(404,"Category not found"));
@@ -181,18 +181,15 @@ public class CategoryService implements CategoryDTO {
     @Override
     public void deletedBook(HeaderValidationDTO authorizationHeader, BaseCaterogyDTO category) throws UserNotExistException {
         // validation Header
-        Set<ConstraintViolation<HeaderValidationDTO>> violationHeader = validator.validate(authorizationHeader);
+        Set<ConstraintViolation<HeaderValidationDTO>> violationHeader = validator.validate(authorizationHeader, OnUpdate.class);
         if (!violationHeader.isEmpty()){
-            throw new CustomAuthorizationException(401,violationHeader.toString() );
+            throw new CustomAuthorizationException(401,violationHeader );
         }
         // validation Body
         Set<ConstraintViolation<BaseCaterogyDTO>> violationsBody = validator.validate(category, OnUpdateByBook.class);
         if(!violationsBody.isEmpty()) {
-            throw new UserBadRequest(401,violationsBody.toString());
+            throw new UserBadRequest(401,violationsBody);
         }
-        List<Book> books = bookRepository.findAllById(category.getBooks().stream()
-                .map(Book::getId)
-                .collect(Collectors.toList()));
 
         Category categoryRequest = categoryRepository.findById(category.getId()).map(
                         categoyBook -> {
@@ -200,6 +197,7 @@ public class CategoryService implements CategoryDTO {
                             if (existingBooks == null) {
                                 existingBooks = new ArrayList<>();
                             }
+                            System.out.println("existingBooks = " + existingBooks);
                             try {
                                 Optional.ofNullable(existingBooks.stream()
                                         .filter(item -> category.getBooks().stream()
